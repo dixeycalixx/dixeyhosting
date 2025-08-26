@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pembayaran QRIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+        color: #fff;
+        font-family: 'Courier New', monospace;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Efek background grid neon */
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(90deg, rgba(0,255,0,0.1) 0px, rgba(0,255,0,0.1) 2px, transparent 2px, transparent 40px),
+                    repeating-linear-gradient(180deg, rgba(0,255,0,0.1) 0px, rgba(0,255,0,0.1) 2px, transparent 2px, transparent 40px);
+        animation: gridMove 10s linear infinite;
+        z-index: 0;
+    }
+    @keyframes gridMove {
+        from { transform: translate(0,0); }
+        to { transform: translate(40px,40px); }
+    }
+
+    /* Teks DIXEY di background */
+    body::after {
+        content: 'DIXEY DIXEY DIXEY DIXEY DIXEY';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 6rem;
+        color: rgba(0, 255, 0, 0.05);
+        text-shadow: 0 0 5px #0f0, 0 0 20px #00ff7f, 0 0 40px #0f0;
+        white-space: nowrap;
+        animation: scrollText 20s linear infinite;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    @keyframes scrollText {
+        0% { transform: translate(-50%, -50%) translateX(0); }
+        100% { transform: translate(-50%, -50%) translateX(-1000px); }
+    }
+
+    h1 {
+        font-size: 2rem;
+        color: #0f0;
+        text-shadow: 0 0 10px #0f0;
+        z-index: 2;
+        margin-bottom: 10px;
+    }
+
+    .product-info {
+        background: rgba(0, 255, 0, 0.05);
+        border: 2px solid #0f0;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+        color: #0f0;
+        text-shadow: 0 0 8px #0f0;
+        width: 280px;
+        text-align: center;
+        box-shadow: 0 0 15px #0f0;
+        z-index: 2;
+    }
+
+    .qris-container {
+        background: rgba(0, 255, 0, 0.08);
+        border: 3px solid #0f0;
+        border-radius: 15px;
+        padding: 20px;
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        box-shadow: 0 0 25px #0f0;
+        animation: pulse 2s infinite;
+        z-index: 2;
+    }
+    .qris-container img {
+        width: 220px;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 0 15px #0f0;
+    }
+    .qris-container p {
+        color: #0f0;
+        font-weight: bold;
+        margin-top: 10px;
+        text-shadow: 0 0 8px #0f0;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 10px #0f0; }
+        50% { box-shadow: 0 0 30px #00ff7f; }
+        100% { box-shadow: 0 0 10px #0f0; }
+    }
+
+    .upload-section {
+        background: rgba(0, 255, 0, 0.05);
+        padding: 15px;
+        border-radius: 10px;
+        border: 2px solid #0f0;
+        box-shadow: 0 0 10px #0f0;
+        width: 280px;
+        text-align: center;
+        z-index: 2;
+    }
+    input[type="file"] {
+        margin: 10px;
+        color: #0f0;
+    }
+    .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        background: #0f0;
+        color: #000;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: 0.3s;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+    .btn:hover {
+        background: #00ff7f;
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #00ff7f;
+    }
+    .btn.disabled {
+        background: #333;
+        color: #777;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .virus {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #0f0;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: move 12s linear infinite;
+    }
+    @keyframes move {
+        0% { transform: translate(0,0); }
+        100% { transform: translate(100vw,100vh); }
+    }
+</style>
+</head>
+<body>
+    <h1>Pembayaran QRIS</h1>
+    <div class="product-info" id="productInfo"></div>
+
+    <div class="qris-container">
+        <img src="assets/qris.jpg" alt="QRIS Pembayaran">
+        <p>Scan QR untuk bayar</p>
+    </div>
+
+    <div class="upload-section">
+        <input type="file" id="proof" accept="image/*"><br>
+        <button class="btn" id="sendBtn" onclick="sendProof()">Kirim Bukti</button>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const product = params.get('product') || 'Produk Tidak Diketahui';
+        const price = params.get('price') || '0';
+        const BOT_TOKEN = "7329243125:AAFao6lHDfTuXd6pZYpM27ytPdbnUZCEHLw";
+        const CHAT_ID = "7475467697";
+
+        document.getElementById('productInfo').innerHTML = `
+            Produk: <strong>${product}</strong><br>
+            Harga: <strong>Rp ${parseInt(price).toLocaleString()}</strong>
+        `;
+
+        for (let i = 0; i < 40; i++) {
+            const virus = document.createElement('div');
+            virus.classList.add('virus');
+            virus.style.top = Math.random() * 100 + 'vh';
+            virus.style.left = Math.random() * 100 + 'vw';
+            virus.style.animationDuration = (5 + Math.random() * 10) + 's';
+            document.body.appendChild(virus);
+        }
+
+        async function sendProof() {
+            const fileInput = document.getElementById('proof');
+            const sendBtn = document.getElementById('sendBtn');
+
+            if (!fileInput.files[0]) {
+                alert("Pilih gambar bukti pembayaran dulu!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('chat_id', CHAT_ID);
+            formData.append('caption', `Bukti Pembayaran:\nProduk: ${product}\nHarga: Rp ${price}`);
+            formData.append('photo', fileInput.files[0]);
+
+            try {
+                sendBtn.textContent = "Mengirim...";
+                sendBtn.disabled = true;
+                sendBtn.classList.add('disabled');
+
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    sendBtn.textContent = "Terkirim ✅";
+                } else {
+                    sendBtn.textContent = "Gagal, coba lagi";
+                    sendBtn.disabled = false;
+                    sendBtn.classList.remove('disabled');
+                }
+            } catch (error) {
+                alert("Terjadi error: " + error.message);
+                sendBtn.textContent = "Kirim Bukti";
+                sendBtn.disabled = false;
+                sendBtn.classList.remove('disabled');
+            }
+        }
+    </script>
+</body>
+</html>

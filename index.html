@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dixey Calix Store</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Background animasi virus hijau + petir */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      pointer-events: none;
+      z-index: -2;
+      animation: lightning 5s infinite;
+    }
+
+    @keyframes lightning {
+      0%, 96%, 100% { background: #000; }
+      97% { background: #fff; }
+      98% { background: #000; }
+      99% { background: #fff; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container { text-align: center; padding: 50px 20px; }
+
+    h1 {
+      font-size: 3rem;
+      color: #00ff00; /* Hijau neon */
+      text-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #00f7ff;
+      text-shadow: 0 0 8px #00f7ff;
+      margin-bottom: 30px;
+    }
+
+    .channels a {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      text-decoration: none;
+      border-radius: 8px;
+      text-shadow: 0 0 8px #00ff00;
+      transition: 0.3s;
+    }
+    .channels a:hover {
+      background: #00ff00;
+      color: #000;
+      text-shadow: none;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 15px;
+      border: 2px solid #00ff00;
+      text-align: left;
+      box-shadow: 0 0 20px #00ff0055;
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px #00ff00aa;
+    }
+    .card h3 {
+      color: #00ff00;
+      text-shadow: 0 0 8px #00ff00;
+    }
+    .card ul { padding-left: 20px; margin-bottom: 10px; }
+
+    .order-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #00ff00;
+      color: #000;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      text-shadow: none;
+      box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+      transition: 0.3s;
+    }
+    .order-btn:hover {
+      background: #00cc00;
+      box-shadow: 0 0 10px #00cc00, 0 0 25px #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <div class="container">
+    <h1>Dixey Calix Store</h1>
+    <p>Toko digital otomatis dengan harga terjangkau</p>
+
+    <div class="channels">
+      <a href="https://t.me/dixeychill" target="_blank">Join Channel 1</a>
+      <a href="https://t.me/allaboutclixx" target="_blank">Join Channel 2</a>
+      <a href="https://t.me/roompublic_msg" target="_blank">Join Group</a>
+    </div>
+
+    <div class="products">
+      <div class="card">
+        <h3>Panel 1GB–10GB</h3>
+        <p>Rp 1k–10k</p>
+        <a class="order-btn" href="payment.html?product=Panel 1GB–10GB">Order</a>
+      </div>
+
+      <div class="card">
+        <h3>Reseller Panel</h3>
+        <p>Rp 12k</p>
+        <a class="order-btn" href="payment.html?product=Reseller Panel">Order</a>
+      </div>
+
+      <div class="card">
+        <h3>Admin Panel</h3>
+        <p>Rp 15k</p>
+        <a class="order-btn" href="payment.html?product=Admin Panel">Order</a>
+      </div>
+
+      <div class="card">
+        <h3>Script Dreadveil</h3>
+        <ul>
+          <li>No Update: Rp 25k</li>
+          <li>Full Update: Rp 40k</li>
+          <li>Reseller SC: Rp 65k</li>
+          <li>Partner SC: Rp 80k</li>
+          <li>Moderator SC: Rp 100k</li>
+          <li>Owner SC: Rp 130k</li>
+        </ul>
+        <a class="order-btn" href="payment.html?product=Script Dreadveil">Order</a>
+      </div>
+
+      <div class="card">
+        <h3>Script Void Strom</h3>
+        <ul>
+          <li>No Update: Rp 70k</li>
+          <li>Free Up 3x: Rp 110k</li>
+          <li>Free Up Manen: Rp 130k</li>
+          <li>Reseller: Rp 150k</li>
+          <li>PT: Rp 170k</li>
+        </ul>
+        <a class="order-btn" href="payment.html?product=Script Void Strom">Order</a>
+      </div>
+
+      <div class="card">
+        <h3>Partner Basic</h3>
+        <p>Rp 50k</p>
+        <ul>
+          <li>Reseller panel</li>
+          <li>Reseller SC Dreadveil</li>
+          <li>Base script Telegram/WA</li>
+          <li>All project script</li>
+        </ul>
+        <a class="order-btn" href="payment.html?product=Partner Basic">Order</a>
+      </div>
+
+      <div class="card">
+        <h3>Open Owner</h3>
+        <p>Rp 100k</p>
+        <ul>
+          <li>Reseller panel</li>
+          <li>Script Dreadveil full update</li>
+          <li>Owner SC Dreadveil</li>
+          <li>Full pengajaran</li>
+        </ul>
+        <a class="order-btn" href="payment.html?product=Open Owner">Order</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Efek Matrix Virus Hijau -->
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+
+    const drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#0f0';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+  </script>
+</body>
+</html>
